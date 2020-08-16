@@ -5,6 +5,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
@@ -16,12 +17,17 @@ import Button from '../../components/Button';
 
 import logoImg from '../../assets/logo.png';
 
-import { Container, Title, BackToSignIn, BackToSignInText } from './styles';
+import {
+ Container, Title, BackToSignIn, BackToSignInText
+} from './styles';
 
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const navigation = useNavigation();
+
+  const emailInputRef = useRef<TextInput>(null);
+  const passwordInputRef = useRef<TextInput>(null);
 
   return (
     <>
@@ -40,18 +46,51 @@ const SignUp: React.FC = () => {
               <Title>Crie sua conta</Title>
             </View>
 
-            <Form ref={formRef} onSubmit={() => {}}>
-              <Input name="name" icon="user" placeholder="Nome" />
-
-              <Input name="email" icon="mail" placeholder="Email" />
-
-              <Input name="passaword" icon="lock" placeholder="Senha" />
-
-              <Button
-                onPress={() => {
-                  console.log('funcionou');
+            <Form
+              ref={formRef}
+              onSubmit={(data) => {
+                console.log(data);
+              }}
+            >
+              <Input
+                autoCapitalize="words"
+                name="name"
+                icon="user"
+                placeholder="Nome"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  // eslint-disable-next-line no-unused-expressions
+                  emailInputRef.current?.focus();
                 }}
-              >
+              />
+
+              <Input
+                ref={emailInputRef}
+                keyboardType="email-address"
+                autoCorrect={false}
+                autoCapitalize="none"
+                name="email"
+                icon="mail"
+                placeholder="Email"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  // eslint-disable-next-line no-unused-expressions
+                  passwordInputRef.current?.focus();
+                }}
+              />
+
+              <Input
+                ref={passwordInputRef}
+                secureTextEntry
+                name="passaword"
+                icon="lock"
+                placeholder="Senha"
+                textContentType="newPassword"
+                returnKeyType="send"
+                onSubmitEditing={() => formRef.current?.submitForm()}
+              />
+
+              <Button onPress={() => formRef.current?.submitForm()}>
                 Enviar
               </Button>
             </Form>
