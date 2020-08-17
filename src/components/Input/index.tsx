@@ -25,13 +25,12 @@ interface InputRef {
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  // eslint-disable-next-line react/prop-types
   { name, icon, ...rest },
   ref,
 ) => {
-  const inputElementRef = useRef<any>(null);
-  // eslint-disable-next-line object-curly-newline
   const { registerField, defaultValue = '', fieldName, error } = useField(name);
+
+  const inputElementRef = useRef<any>(null);
   const inputValueRef = useRef<InputValueReference>({ value: defaultValue });
 
   const [isFocused, setIsFocused] = useState(false);
@@ -43,7 +42,6 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
-
     setIsField(!!inputValueRef.current.value);
   }, []);
 
@@ -58,19 +56,19 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       name: fieldName,
       ref: inputValueRef.current,
       path: 'value',
-      setValue(ref: any, value) {
-        inputValueRef.current.value = value;
-        inputElementRef.current.setNativeProps({ text: value });
-      },
-      clearValue() {
-        inputValueRef.current.value = '';
-        inputElementRef.current.clear();
-      },
+      // setValue(ref: any, value) {
+      //   inputValueRef.current.value = value;
+      //   inputElementRef.current.setNativeProps({ text: value });
+      // },
+      // clearValue() {
+      //   inputValueRef.current.value = '';
+      //   inputElementRef.current.clear();
+      // },
     });
   }, [fieldName, registerField]);
 
   return (
-    <Container isFocused={isFocused}>
+    <Container isFocused={isFocused} isErrored={!!error}>
       <Icon
         name={icon}
         size={20}
@@ -81,12 +79,12 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
         keyboardAppearance="dark"
         placeholderTextColor="#666360"
         defaultValue={defaultValue}
-        onFocus={handleInputFocus}
-        onBlur={handleInputBlur}
         onChangeText={value => {
           inputValueRef.current.value = value;
         }}
         {...rest}
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
       />
     </Container>
   );
