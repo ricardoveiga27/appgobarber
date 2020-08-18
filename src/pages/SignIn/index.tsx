@@ -38,7 +38,7 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const navigation = useNavigation();
   const formRef = useRef<FormHandles>(null);
-  const passawordInputRef = useRef<TextInput>(null);
+  const passwordInputRef = useRef<TextInput>(null);
   const { signIn } = useAuth();
 
   const handleSignIn = useCallback(
@@ -107,12 +107,12 @@ const SignIn: React.FC = () => {
                 placeholder="Email"
                 returnKeyType="next"
                 onSubmitEditing={() => {
-                  passawordInputRef.current?.focus();
+                  passwordInputRef.current?.focus();
                 }}
               />
 
               <Input
-                ref={passawordInputRef}
+                ref={passwordInputRef}
                 name="password"
                 icon="lock"
                 placeholder="Senha"
